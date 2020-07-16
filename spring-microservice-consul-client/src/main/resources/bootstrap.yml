@@ -1,0 +1,17 @@
+spring:
+  cloud:
+    consul:
+      host: ${SERVICE_DISCOVERY_HOST:localhost}
+      port: ${SERVICE_DISCOVERY_PORT:8500}
+      config:
+        fail-fast: true
+        watch:
+          delay: 60000
+          enabled: true
+        data-key: data
+        prefix: config
+        format: yaml
+        default-context: common
+      discovery:
+        instance-id: ${INSTANCE_ID:client}
+        serviceName: training-${spring.application.name}

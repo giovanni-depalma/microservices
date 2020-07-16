@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: myService2
+server:
+  port: 9001

@@ -1,0 +1,52 @@
+networks:
+  default:
+    name: training-network
+
+services:
+  training-consul:
+    container_name: training-consul
+    dns:
+    - 8.8.8.8
+    - 8.8.4.4
+    image: consul:1.8.0
+    ports:
+      - "8500:8500"
+
+  spring-microservice-consul-1:
+    container_name: spring-microservice-consul-1
+    image: spring-microservice-consul-1
+    environment: 
+      - SERVICE_DISCOVERY_HOST=training-consul
+      - server.port=9000
+    ports:
+      - "80:9000"
+
+  spring-microservice-consul-2:
+    container_name: spring-microservice-consul-2
+    image: spring-microservice-consul-1
+    environment: 
+      - SERVICE_DISCOVERY_HOST=training-consul
+      - server.port=9001
+    ports:
+      - "90:9001"
+
+  spring-microservice-consul-client:
+    container_name: spring-microservice-consul-client
+    image: spring-microservice-consul-client
+    environment: 
+      - SERVICE_DISCOVERY_HOST=training-consul
+    ports:
+      - "81:9001"
+
+  
+  spring-microservice-consul-client-distroless:
+    container_name: spring-microservice-consul-client-distroless
+    image: spring-microservice-consul-client-distroless
+    environment: 
+      - SERVICE_DISCOVERY_HOST=training-consul
+      - INSTANCE_ID=client-distroless
+    ports:
+      - "82:9001"    
+
+version: '3.5'
+

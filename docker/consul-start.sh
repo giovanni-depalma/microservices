@@ -1,0 +1,1 @@
+docker run -p 8500:8500 -d --name=training-consul -e CONSUL_BIND_INTERFACE=eth0 consul:1.8.0
