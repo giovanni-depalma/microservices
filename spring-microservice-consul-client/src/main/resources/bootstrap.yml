@@ -13,5 +13,6 @@ spring:
         format: yaml
         default-context: common
       discovery:
+        preferIpAddress: true
         instance-id: ${INSTANCE_ID:client}
         serviceName: training-${spring.application.name}

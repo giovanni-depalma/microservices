@@ -1,0 +1,24 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: training-service
+          uri: lb://training-service
+          predicates:
+            - Path=/training-service/**
+          filters:
+            - RewritePath=/training-service/(?<path>.*), /$\{path}
+        - id: training-client
+          uri: lb://training-client
+          predicates:
+            - Path=/training-client/**
+          filters:
+            - RewritePath=/training-client/(?<path>.*), /$\{path}
+        

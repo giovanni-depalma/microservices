@@ -13,5 +13,4 @@ spring:
         format: yaml
         default-context: common
       discovery:
-        preferIpAddress: true
-        serviceName: training-${spring.application.name}
+        serviceName: gateway

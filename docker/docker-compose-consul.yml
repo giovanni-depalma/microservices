@@ -12,6 +12,14 @@ services:
     ports:
       - "8500:8500"
 
+  spring-microservice-gateway:
+    container_name: spring-microservice-gateway-consul
+    image: spring-microservice-gateway-consul
+    environment: 
+      - SERVICE_DISCOVERY_HOST=training-consul
+    ports:
+      - "8080:8080"
+
   spring-microservice-consul-1:
     container_name: spring-microservice-consul-1
     image: spring-microservice-consul-1
@@ -19,7 +27,7 @@ services:
       - SERVICE_DISCOVERY_HOST=training-consul
       - server.port=9000
     ports:
-      - "80:9000"
+      - "9000:9000"
 
   spring-microservice-consul-2:
     container_name: spring-microservice-consul-2
@@ -28,7 +36,7 @@ services:
       - SERVICE_DISCOVERY_HOST=training-consul
       - server.port=9001
     ports:
-      - "90:9001"
+      - "9101:9001"
 
   spring-microservice-consul-client:
     container_name: spring-microservice-consul-client
@@ -36,7 +44,7 @@ services:
     environment: 
       - SERVICE_DISCOVERY_HOST=training-consul
     ports:
-      - "81:9001"
+      - "9201:9001"
 
   
   spring-microservice-consul-client-distroless:
@@ -46,7 +54,7 @@ services:
       - SERVICE_DISCOVERY_HOST=training-consul
       - INSTANCE_ID=client-distroless
     ports:
-      - "82:9001"    
+      - "9301:9001"    
 
 version: '3.5'
 
