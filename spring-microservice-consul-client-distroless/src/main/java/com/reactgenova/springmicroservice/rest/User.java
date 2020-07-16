@@ -2,7 +2,6 @@ package com.reactgenova.springmicroservice.rest;
 
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class User {
         private String userName;

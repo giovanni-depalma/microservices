@@ -21,4 +21,11 @@ spring:
             - Path=/training-client/**
           filters:
             - RewritePath=/training-client/(?<path>.*), /$\{path}
+        - id: react-app
+          uri: lb://react-app
+          predicates:
+            - Path=/react-app/**
+          filters:
+            - RewritePath=/react-app/(?<path>.*), /$\{path}
+        
         
