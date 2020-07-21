@@ -13,13 +13,13 @@ RUN CI=true yarn test --passWithNoTests
 FROM prepare AS build
 RUN CI=true yarn build
 
-FROM nginx:1.17.9-alpine AS final
-COPY nginx.template /etc/nginx/conf.d/
+FROM nginx:1.19.1-alpine AS final
+COPY .docker/default.conf.template /etc/nginx/templates/default.conf.template
+COPY .docker/docker-entrypoint.d/* /docker-entrypoint.d
+COPY .docker/consul-register.json /consul-register.json
 COPY --from=build /workspace/build /usr/share/nginx/html
-COPY nginx-entrypoint.sh /nginx-entrypoint.sh
 
 # This is a hack around the envsubst nginx config. Because we have `$uri` set
 # up, it would replace this as well. Now we just reset it to its original value.
 ENV uri \$uri
-
-ENTRYPOINT [ "sh", "/nginx-entrypoint.sh" ]
+ENV BASE_URL /

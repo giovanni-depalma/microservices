@@ -4,4 +4,5 @@ spring:
       discovery:
         locator:
           enabled: false
+
         

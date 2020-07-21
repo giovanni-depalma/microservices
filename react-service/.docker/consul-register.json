@@ -1,0 +1,13 @@
+{
+    "ID": "react-service",
+    "Name": "react-service",
+    "Address": "spring-microservice-react",
+    "Port": 80,
+    "Check": {
+        "name": "React Service Check",
+        "http": "http://${SERVICE_NAME}/",
+        "tls_skip_verify": false,
+        "interval": "10s",
+        "timeout": "2s"        
+    }
+}

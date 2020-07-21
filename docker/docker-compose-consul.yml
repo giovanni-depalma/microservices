@@ -17,7 +17,22 @@ services:
     image: spring-microservice-gateway-consul
     environment: 
       - SERVICE_DISCOVERY_HOST=training-consul
+      - IDENTITY_SERVER=identity-server
+    depends_on: 
+      - identity-server
     ports:
+      - "8081:8081"
+
+  identity-server:
+      container_name: identity-server
+      image: quay.io/keycloak/keycloak:10.0.2
+      environment: 
+        - KEYCLOAK_IMPORT=/tmpInit/realm-export.json
+        - KEYCLOAK_USER=admin
+        - KEYCLOAK_PASSWORD=admin
+      volumes:
+        - /c/training/realm-export.json:/tmpInit/realm-export.json:ro
+      ports:
       - "8080:8080"
 
   spring-microservice-consul-1:
@@ -59,6 +74,11 @@ services:
   spring-microservice-react:
     container_name: spring-microservice-react
     image: react-service
+    depends_on:
+      - training-consul
+    environment: 
+      - SERVICE_DISCOVERY_HOST=training-consul
+      - BASE_URL=/react-service/
     ports:
       - "5000:80"
 

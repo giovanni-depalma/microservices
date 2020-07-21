@@ -1,13 +1,39 @@
 server:
-  port: 8080
+  port: 8081
 spring:
   application:
     name: gateway
+
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            provider: keycloak
+            client-id: spring-cloud-gateway-client
+            client-secret: 958198f4-a4ab-445a-ac20-d43f8563b44e
+            authorizationGrantType: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope:
+              - openid
+              - profile
+              - email
+        provider:
+          keycloak:
+            #issuer-uri: http://${IDENTITY_SERVER:localhost}:8080/auth/realms/spring-cloud-gateway-realm
+            authorization-uri: http://${IDENTITY_SERVER:localhost}:8080/auth/realms/spring-cloud-gateway-realm/protocol/openid-connect/auth
+            token-uri: http://${IDENTITY_SERVER:localhost}:8080/auth/realms/spring-cloud-gateway-realm/protocol/openid-connect/token
+            jwk-set-uri: http://${IDENTITY_SERVER:localhost}:8080/auth/realms/spring-cloud-gateway-realm/protocol/openid-connect/certs
+            user-info-uri: http://${IDENTITY_SERVER:localhost}:8080/auth/realms/spring-cloud-gateway-realm/protocol/openid-connect/userinfo
+            user-name-attribute: preferred_username
+
   cloud:
     gateway:
       discovery:
         locator:
           enabled: true
+      default-filters:
+        - TokenRelay
       routes:
         - id: training-service
           uri: lb://training-service
@@ -22,10 +48,10 @@ spring:
           filters:
             - RewritePath=/training-client/(?<path>.*), /$\{path}
         - id: react-app
-          uri: lb://react-app
+          uri: lb://react-service
           predicates:
-            - Path=/react-app/**
+            - Path=/react-service/**
           filters:
-            - RewritePath=/react-app/(?<path>.*), /$\{path}
+            - RewritePath=/react-service/(?<path>.*), /$\{path}
         
         
